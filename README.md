@@ -1,6 +1,6 @@
 # 金属屈服阻尼器数据处理
 
-Codex skill for processing multi-level cyclic loading test data for displacement-type metal yielding dampers.
+这是一个 Codex skill，用于处理位移型金属屈服阻尼器的多级循环加载检测数据。
 
 适用对象包括：
 
@@ -9,52 +9,52 @@ Codex skill for processing multi-level cyclic loading test data for displacement
 - 屈曲约束支撑：BRB
 - 其他按多级加载取点判定的位移型阻尼器
 
-## What This Skill Does
+## 功能
 
-This skill guides Codex through a repeatable workflow for damper test-data processing:
+该 skill 用于引导 Codex 按可复用流程完成阻尼器检测数据处理：
 
-- Archive and organize raw test files.
-- Identify staged loading conditions and cycles.
-- Extract positive and negative peak points from selected cycles.
-- Calculate method-one and method-two yield parameters.
-- Judge deviations from standard/design values.
-- Generate Excel reports with traceable calculation sheets.
-- Generate curve review plots with auxiliary lines and picked points.
-- Record concise results back into project Markdown notes.
+- 归档并整理原始检测文件。
+- 识别多级加载工况和循环圈数。
+- 从指定循环中提取正、负向峰值点。
+- 计算方法一和方法二的屈服参数。
+- 判定实测值与标准值/设计值的偏差。
+- 生成带可追溯计算表的 Excel 报告。
+- 生成带辅助线和取点标记的曲线复核图。
+- 将主要结果摘要记录回项目 Markdown 笔记。
 
-## Core Calculation Methods
+## 核心计算方法
 
-### Method One
+### 方法一
 
-Initial stiffness and post-yield fit intersection:
+初始刚度线与屈服后刚度拟合线交点法：
 
-- Fit initial stiffness `K0` from the initial loading segment.
-- Fit post-yield stiffness `Kp` from selected standard-condition peak points.
-- Calculate yield force and yield displacement from the intersection of the `K0` and `Kp` lines.
+- 从初始加载段拟合初始刚度 `K0`。
+- 从选定标准工况峰值点拟合屈服后刚度 `Kp`。
+- 通过 `K0` 线与 `Kp` 线的交点计算屈服力和屈服位移。
 
-### Method Two
+### 方法二
 
-Unloading stiffness method:
+卸载刚度法：
 
-- Fit unloading stiffness `Kun` from the design-condition cycle.
-- Select `Fy2/Dy2` from the original point nearest to the `F = Kun_avg x D` origin line.
-- Calculate method-two initial stiffness:
+- 从设计位移工况循环中拟合卸载刚度 `Kun`。
+- 在原始曲线上选取距离 `F = Kun_avg x D` 原点线最近的点作为 `Fy2/Dy2`。
+- 方法二初始刚度按屈服点与原点连线计算：
 
 ```text
 K0_2 = Fy2 / Dy2
 ```
 
-- Calculate method-two post-yield stiffness:
+- 方法二屈服后刚度按屈服点与设计承载力点连线计算：
 
 ```text
 Kp_2 = (Fd - Fy2) / (Dd - Dy2)
 ```
 
-Method-two `K0` and `Kp` must not reuse method-one `K0` and `Kp`.
+方法二的 `K0` 和 `Kp` 不应复用方法一的 `K0` 和 `Kp`。
 
-## Expected Outputs
+## 输出内容
 
-Recommended workbook sheets:
+推荐生成的工作簿 sheet：
 
 - `方法一偏差判定`
 - `方法二偏差判定`
@@ -68,44 +68,44 @@ Recommended workbook sheets:
 - `曲线复核`
 - `说明`
 
-Curve review plots should include:
+曲线复核图建议包含：
 
-- Complete hysteresis curve
-- Selected standard cycles
-- Peak points
-- Method-one `K0` and `Kp` auxiliary lines
-- Method-one yield points
-- Method-two unloading stiffness line
-- Method-two `K0` line from origin to `Fy2/Dy2`
-- Method-two `Kp` line from `Fy2/Dy2` to `Fd/Dd`
-- Design and ultimate displacement auxiliary lines
+- 完整滞回曲线
+- 选定标准工况循环
+- 峰值点
+- 方法一 `K0` 和 `Kp` 辅助线
+- 方法一屈服点
+- 方法二卸载刚度线
+- 方法二从原点到 `Fy2/Dy2` 的 `K0` 线
+- 方法二从 `Fy2/Dy2` 到 `Fd/Dd` 的 `Kp` 线
+- 设计位移和极限位移辅助线
 
-## Installation
+## 安装
 
-Clone or copy this folder into a Codex skills directory, for example:
+将本文件夹克隆或复制到 Codex skills 目录，例如：
 
 ```text
 C:\Users\<user>\.codex\skills\metal-yield-damper-data-processing
 ```
 
-Then invoke it explicitly in Codex:
+然后在 Codex 中显式调用：
 
 ```text
 $metal-yield-damper-data-processing
 ```
 
-or ask in natural language:
+也可以用自然语言调用：
 
 ```text
 用金属屈服阻尼器数据处理这个 skill 处理这批检测数据。
 ```
 
-## Files
+## 文件说明
 
-- `SKILL.md`: Codex skill trigger metadata and main workflow.
-- `references/methods.md`: Detailed reusable calculation protocol.
-- `agents/openai.yaml`: UI metadata for Codex.
+- `SKILL.md`：Codex skill 的触发说明、主要流程和输出要求。
+- `references/methods.md`：可复用的详细计算方法。
+- `agents/openai.yaml`：Codex 中显示用的界面元数据。
 
-## Notes
+## 备注
 
-This skill encodes the processing口径 developed from XNQB wall-panel damper test data, then generalizes it to QB, MYD, BRB, and other displacement-type metal yielding dampers that use staged cyclic loading and point-picking rules.
+该 skill 由 XNQB 墙板阻尼器检测数据处理流程沉淀而来，并进一步泛化到 QB、MYD、BRB 及其他采用多级循环加载和取点判定规则的位移型金属屈服阻尼器。
