@@ -1,0 +1,4 @@
+﻿interface:
+  display_name: "金属屈服阻尼器数据处理"
+  short_description: "处理QB、MYD、BRB等多级加载阻尼器检测数据"
+  default_prompt: "Use $metal-yield-damper-data-processing to process a batch of displacement-type metal yielding damper test data and generate calculation reports."
